@@ -5,23 +5,17 @@ import org.apache.commons.lang3.RandomStringUtils;
 public class CourierGenerator {
 
     public Courier generic() {
-        return new Courier("логин_тест", "пароль_тест", "имя_тест");
-    }
 
+        return new Courier(RandomStringUtils.randomAlphanumeric(10), RandomStringUtils.randomAlphanumeric(10), RandomStringUtils.randomAlphanumeric(10));
+    }
 
     public Courier emptyFields() {
-        return new Courier("", "", "имя_тест");
+        return new Courier("", "", RandomStringUtils.randomAlphanumeric(10));
     }
-
-
-    public Courier genericRand() {
-        return new Courier(RandomStringUtils.randomAlphanumeric(4, 5), "пароль_тест", "имя_тест");
+    public Courier emptyFieldLogin() {
+        return new Courier("", RandomStringUtils.randomAlphanumeric(10), RandomStringUtils.randomAlphanumeric(10));
     }
-
-    public Courier notFullData() {
-        Courier courier = new Courier();
-        courier.setPassword("пароль_тест");
-        return courier;
+    public Courier emptyFieldPassword() {
+        return new Courier(RandomStringUtils.randomAlphanumeric(10), "", RandomStringUtils.randomAlphanumeric(10));
     }
-
 }

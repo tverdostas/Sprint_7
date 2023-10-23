@@ -16,7 +16,7 @@ public class CourierTest {
     @DisplayName("Создание курьера")
     @Description("Проверка успешного создания курьера")
     public void testCreateCourier() {
-        var courier = courierGenerator.genericRand();
+        var courier = courierGenerator.generic();
         courierAssertions.createdSuccessful(client.createCourier(courier));
     }
 
@@ -24,6 +24,7 @@ public class CourierTest {
     @DisplayName("Создание существующего курьера - Проверка вывода ошибки")
     public void testCreateCourierCheckDuplicate() {
         var courier = courierGenerator.generic();
+        courierAssertions.createdSuccessful(client.createCourier(courier));
         courierAssertions.createCheckConflict(client.createCourier(courier));
     }
 
@@ -38,20 +39,28 @@ public class CourierTest {
     @DisplayName("Успешная авторизация курьера")
     public void testLoginTest() {
         var courier = courierGenerator.generic();
+        courierAssertions.createdSuccessful(client.createCourier(courier));
         courierAssertions.loginSuccessful(client.loginCourier(courier));
     }
 
     @Test //для авторизации нужно передать все обязательные поля
-    @DisplayName("Проверка авторизации курьера - Проверка обязательных полей")
-    public void testLoginTestFailed() {
-        var courier = courierGenerator.emptyFields();
+    @DisplayName("Проверка авторизации курьера - Проверка обязательного поля Логин")
+    public void testLoginTestFailedWithoutLogin() {
+        var courier = courierGenerator.emptyFieldLogin();
+        courierAssertions.loginFailed(client.loginCourier(courier));
+    }
+
+    @Test //для авторизации нужно передать все обязательные поля
+    @DisplayName("Проверка авторизации курьера - Проверка обязательного поля Пароль")
+    public void testLoginTestFailedWithoutPassword() {
+        var courier = courierGenerator.emptyFieldPassword();
         courierAssertions.loginFailed(client.loginCourier(courier));
     }
 
     @Test  // авторизация курьера с некорректными данными
     @DisplayName("Проверка корректности данных при авторизации курьера")
     public void testLoginIncorrectData() {
-        var courier = courierGenerator.genericRand();
+        var courier = courierGenerator.generic();
         courierAssertions.notFound(client.loginCourier(courier));
     }
 
